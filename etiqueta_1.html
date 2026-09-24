@@ -1,303 +1,146 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<title>Etiquetas de transporte</title>
-
 <style>
-    @page {
-        size: 80mm 100mm;
-        margin: 0;
-    }
+@page {
+    size: 80mm 100mm;
+    margin: 0;
+}
 
-    * {
-        box-sizing: border-box;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    body {
-        margin: 0;
-        color: #000;
-        background: #fff;
-        font-family: Arial, sans-serif;
-    }
+body {
+    margin: 0;
+    background: #fff;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
 
+.etiqueta {
+    width: 80mm;
+    height: 100mm;
+    padding: 7mm 6mm 6mm;
+    overflow: hidden;
+    break-after: page;
+    page-break-after: always;
+}
+
+.etiqueta:last-child {
+    break-after: auto;
+    page-break-after: auto;
+}
+
+.cabecalho {
+    height: 20mm;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2mm;
+}
+
+.logo {
+    width: 58mm;
+    max-height: 16mm;
+    object-fit: contain;
+}
+
+.marca {
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: 23pt;
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+}
+
+.marca small {
+    display: block;
+    margin-top: 1mm;
+    font-family: Arial, sans-serif;
+    font-size: 9pt;
+    font-weight: normal;
+    letter-spacing: 3px;
+}
+
+.linha {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    height: 10mm;
+}
+
+.rotulo {
+    flex-shrink: 0;
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: 18pt;
+    font-weight: 900;
+}
+
+.sublinhado {
+    text-decoration: underline;
+    text-underline-offset: 1mm;
+}
+
+.valor {
+    min-width: 0;
+    margin-left: 2mm;
+    font-size: 16pt;
+    font-weight: 800;
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.rodape {
+    height: 22mm;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-bottom: 2mm;
+}
+
+.paletes,
+.volume {
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: 18pt;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+@media print {
     .acoes {
-        padding: 12px;
-        font-size: 14px;
+        display: none;
     }
-
-    /* Cada folha corresponde a um palete. */
-    .etiqueta {
-        position: relative;
-        width: 80mm;
-        height: 100mm;
-        break-after: page;
-        page-break-after: always;
-    }
-
-    .etiqueta:last-child {
-        break-after: auto;
-        page-break-after: auto;
-    }
-
-    /*
-      Área útil com margem de 4 mm.
-      O conteúdo é girado 90 graus, como no modelo enviado.
-    */
-    .layout {
-        position: absolute;
-        left: 80mm;
-        /* Todo o conteúdo 3 mm mais abaixo na etiqueta. */
-        top: 7mm;
-        width: 92mm;
-        height: 72mm;
-        transform-origin: top left;
-        transform: rotate(90deg);
-    }
-
-    .cabecalho {
-        /* A logo fica mais abaixo, sem encostar na borda. */
-        height: 17mm;
-        padding-top: 3mm;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .logo {
-        max-width: 88mm;
-        max-height: 14mm;
-        object-fit: contain;
-    }
-
-    .marca {
-        font-family: "Arial Black", Arial, sans-serif;
-        font-size: 25pt;
-        font-weight: 900;
-        font-style: italic;
-        text-align: center;
-        line-height: 1;
-    }
-
-    .marca small {
-        display: block;
-        margin-top: 1mm;
-        font-family: Arial, sans-serif;
-        font-size: 9pt;
-        font-weight: normal;
-        letter-spacing: 3px;
-    }
-
-    .linha {
-        display: flex;
-        align-items: center;
-        gap: 2mm;
-        min-width: 0;
-    }
-
-    .documentos {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3mm;
-        height: 11mm;
-    }
-
-    .campo {
-        height: 8.5mm;
-    }
-
-    .rotulo {
-        flex-shrink: 0;
-        font-family: "Arial Black", Arial, sans-serif;
-        font-size: 19pt;
-        font-weight: 900;
-    }
-
-    .sublinhado {
-        text-decoration: underline;
-        text-underline-offset: 1mm;
-    }
-
-    .valor {
-        flex: 1;
-        min-width: 0;
-        font-size: 15pt;
-        font-weight: bold;
-        overflow-wrap: anywhere;
-        line-height: 1.05;
-    }
-
-    .rodape {
-        /* Aproveita o espaço livre e posiciona PLT/VOL mais abaixo. */
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        height: 18.5mm;
-        gap: 3mm;
-        padding-bottom: 1mm;
-    }
-
-    .sequencia {
-        font-family: "Arial Black", Arial, sans-serif;
-        font-size: 25pt;
-        font-weight: 900;
-        white-space: nowrap;
-    }
-
-    @media screen {
-        .etiqueta {
-            outline: 1px solid #ccc;
-            margin: 12px auto;
-        }
-    }
-
-    @media print {
-        .acoes {
-            display: none;
-        }
-    }
+}
 </style>
-</head>
-<body>
 
-<div class="acoes">
-    <button onclick="imprimir()">Imprimir todas as etiquetas</button>
-    <p>
-        Papel 80 × 100 mm, escala 100%, sem cabeçalhos e rodapés. Conteúdo horizontal.
-        Selecione todas as páginas e apenas 1 cópia.
-    </p>
-</div>
+<main class="etiqueta">
+    <header class="cabecalho">
+        {marca}
+    </header>
 
-<div class="lote">
+    <div class="linha">
+        <span class="rotulo sublinhado">{tipo_documento}</span>
+        <span class="valor">{numero_documento}</span>
+    </div>
 
-    <main class="etiqueta">
-        <div class="layout">
-            <header class="cabecalho">
-                <div class="marca">TRANSANCHES<small>TRANSPORTES</small></div>
-            </header>
+    <div class="linha">
+        <span class="rotulo">REM:</span>
+        <span class="valor">{remetente}</span>
+    </div>
 
-            <div class="documentos">
-                <div class="linha">
-                    <span class="rotulo sublinhado">NF:</span>
-                    <span class="valor"></span>
-                </div>
+    <div class="linha">
+        <span class="rotulo sublinhado">DES:</span>
+        <span class="valor">{destinatario}</span>
+    </div>
 
-                <div class="linha">
-                    <span class="rotulo sublinhado">CTE:</span>
-                    <span class="valor">118493</span>
-                </div>
-            </div>
+    <div class="linha">
+        <span class="rotulo">CID:</span>
+        <span class="valor">{cidade}</span>
+    </div>
 
-            <div class="linha campo">
-                <span class="rotulo">REM:</span>
-                <span class="valor">DSS</span>
-            </div>
-
-            <div class="linha campo">
-                <span class="rotulo sublinhado">DES:</span>
-                <span class="valor">CALAMO</span>
-            </div>
-
-            <div class="linha campo">
-                <span class="rotulo">CID:</span>
-                <span class="valor">REGISTROS / SP</span>
-            </div>
-
-            <footer class="rodape">
-                <span class="rotulo">PLT/VOL:</span>
-                <span class="sequencia">1 / 2</span>
-            </footer>
-        </div>
-    </main>
-
-    <main class="etiqueta">
-        <div class="layout">
-            <header class="cabecalho">
-                <div class="marca">TRANSANCHES<small>TRANSPORTES</small></div>
-            </header>
-
-            <div class="documentos">
-                <div class="linha">
-                    <span class="rotulo sublinhado">NF:</span>
-                    <span class="valor"></span>
-                </div>
-
-                <div class="linha">
-                    <span class="rotulo sublinhado">CTE:</span>
-                    <span class="valor">118493</span>
-                </div>
-            </div>
-
-            <div class="linha campo">
-                <span class="rotulo">REM:</span>
-                <span class="valor">DSS</span>
-            </div>
-
-            <div class="linha campo">
-                <span class="rotulo sublinhado">DES:</span>
-                <span class="valor">CALAMO</span>
-            </div>
-
-            <div class="linha campo">
-                <span class="rotulo">CID:</span>
-                <span class="valor">REGISTROS / SP</span>
-            </div>
-
-            <footer class="rodape">
-                <span class="rotulo">PLT/VOL:</span>
-                <span class="sequencia">2 / 2</span>
-            </footer>
-        </div>
-    </main>
-
-</div>
-
-<script>
-function ajustar() {
-    let cabe = true;
-
-    for (const valor of document.querySelectorAll('.valor')) {
-        let tamanho = 20;
-        valor.style.fontSize = tamanho + 'px';
-
-        while (
-            (valor.scrollWidth > valor.clientWidth ||
-             valor.scrollHeight > valor.parentElement.clientHeight) &&
-            tamanho > 8
-        ) {
-            tamanho -= 0.5;
-            valor.style.fontSize = tamanho + 'px';
-        }
-
-        if (
-            valor.scrollWidth > valor.clientWidth ||
-            valor.scrollHeight > valor.parentElement.clientHeight
-        ) {
-            cabe = false;
-        }
-    }
-
-    return cabe;
-}
-
-function imprimir() {
-    if (!ajustar()) {
-        alert(
-            'Há um campo muito longo para a etiqueta. ' +
-            'Revise os dados antes de imprimir.'
-        );
-        return;
-    }
-
-    window.print();
-}
-
-window.addEventListener('beforeprint', ajustar);
-
-window.addEventListener('load', async () => {
-    await document.fonts.ready;
-    imprimir();
-});
-</script>
-</body>
-</html>
+    <footer class="rodape">
+        <span class="paletes">{sequencia:02d}/{quantidade:02d} PLTS.</span>
+        <span class="volume">VOL:{quantidade:02d}</span>
+    </footer>
+</main>
